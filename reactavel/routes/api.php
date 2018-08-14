@@ -17,28 +17,12 @@ use Illuminate\Http\Request;
     return $request->user();
 });*/
 
-Route::get('products', function () {
-    return response(\App\Product::all(), 200);
-});
+Route::get('products', 'ProductsController@index');
 
-Route::get('products/{product}', function ($productId) {
-    $response = response(\App\Product::findOrFail($productId), 200);
-    return $response;
-});
+Route::get('products/{product}', 'ProductsController@show');
 
-Route::post('products', function (Request $request) {
-    return \App\Product::create($request->all);
-});
+Route::post('products', 'ProductsController@store');
 
-Route::put('products/{product}', function (Request $request, $productId) {
-    $product = \App\Product::findOrFail($productId);
-    $product->update($request->all());
-    return $product;
-});
+Route::put('products/{product}', 'ProductsController@update');
 
-Route::delete('products/{product}', function ($productId) {
-
-    \App\Product::find($productId)->delete();
-
-    return 204;
-});
+Route::delete('products/{product}', 'ProductsController@delete');
