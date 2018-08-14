@@ -33,10 +33,12 @@ class Main extends Component {
         return this.state.products.map(product => {
             return (
                 <li
-                    onClick={() => this.handleClick(product)}
-
                     key={product.id}>
                     {product.title}
+
+                    <button onClick={() => this.handleClick(product)}>v</button>
+                    <button onClick={() => this.handleDelete(product)}>x</button>
+
                 </li>
             )
         })
@@ -48,12 +50,28 @@ class Main extends Component {
         this.setState({currentProduct: product});
     }
 
+    handleDelete(product) {
+
+        const currentProduct = product;
+        fetch('api/products/' + product.id,
+            {method: 'delete'})
+            .then(response => {
+                /* Duplicate the array and filter out the item to be deleted */
+                var array = this.state.products.filter(function (item) {
+                    return item !== currentProduct
+                });
+
+                this.setState({products: array, currentProduct: null});
+
+            });
+    }
+
     handleAddProduct(product) {
 
         product.price = Number(product.price);
         /*Fetch API for post request */
-        fetch( 'api/products/', {
-            method:'post',
+        fetch('api/products/', {
+            method: 'post',
             /* headers are important*/
             headers: {
                 'Accept': 'application/json',
@@ -65,11 +83,11 @@ class Main extends Component {
             .then(response => {
                 return response.json();
             })
-            .then( data => {
+            .then(data => {
                 //update the state of products and currentProduct
-                this.setState((prevState)=> ({
+                this.setState((prevState) => ({
                     products: prevState.products.concat(data),
-                    currentProduct : data
+                    currentProduct: data
                 }))
             })
 
@@ -80,19 +98,16 @@ class Main extends Component {
 
 
         return (
-            <div>
-                <div className="main">
-                    <div className="menu">
-                        <h3> All products </h3>
-                        <ul>
-                            { this.renderProducts() }
-                        </ul>
+            <div className="main">
+                <div className="menu">
+                    <h3> All products </h3>
+                    <ul>
+                        {this.renderProducts()}
+                    </ul>
 
-                    </div>
-                    <Product product={this.state.currentProduct} />
-                    <AddProduct onAdd={this.handleAddProduct} />
                 </div>
-
+                <Product product={this.state.currentProduct}/>
+                <AddProduct onAdd={this.handleAddProduct}/>
             </div>
 
         );
