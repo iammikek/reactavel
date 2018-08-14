@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-
 import Product from './Product';
 import AddProduct from './AddProduct';
 
@@ -52,31 +51,27 @@ class Main extends Component {
     handleAddProduct(product) {
 
         product.price = Number(product.price);
-
-        fetch('api/products/', {
-
-            method: 'post',
+        /*Fetch API for post request */
+        fetch( 'api/products/', {
+            method:'post',
+            /* headers are important*/
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+
             body: JSON.stringify(product)
-
-
         })
             .then(response => {
                 return response.json();
             })
-
-            .then(
-                data => {
-                    this.setState((prevState) => ({
-                            products: prevState.products.concat(data),
-                            currentProduct: data
-                        })
-                    )
-                }
-            )
+            .then( data => {
+                //update the state of products and currentProduct
+                this.setState((prevState)=> ({
+                    products: prevState.products.concat(data),
+                    currentProduct : data
+                }))
+            })
 
     }
 
@@ -86,19 +81,21 @@ class Main extends Component {
 
         return (
             <div>
-                <h3>All Products</h3>
+                <div className="main">
+                    <div className="menu">
+                        <h3> All products </h3>
+                        <ul>
+                            { this.renderProducts() }
+                        </ul>
 
-                <AddProduct onAdd={this.handleAddProduct}/>
-
-                <ul className="menu">
-                    {this.renderProducts()}
-                </ul>
-
-                <Product product={this.state.currentProduct}/>
+                    </div>
+                    <Product product={this.state.currentProduct} />
+                    <AddProduct onAdd={this.handleAddProduct} />
+                </div>
 
             </div>
-        )
 
+        );
     }
 
 }

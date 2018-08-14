@@ -4,7 +4,7 @@ const Product = ({product}) => {
 
     if (!product) {
         return (
-            <div className="product-not-found"> Product Doesn't exist</div>
+            <div className="product not-found"> Product Doesn't exist</div>
         )
     }
 

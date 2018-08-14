@@ -19,7 +19,7 @@ class ProductsTableSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
 
             Product::create([
-                'title' => $faker->title,
+                'title' => $faker->text(30),
                 'description' => $faker->paragraph,
                 'price' => $faker->randomNumber(2),
                 'availability' => $faker->boolean(50),

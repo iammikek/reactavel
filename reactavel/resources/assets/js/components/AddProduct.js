@@ -39,7 +39,7 @@ class AddProduct extends Component {
     render() {
 
         return (
-            <div>
+            <div className="addProductg">
                 <h2> Add new product </h2>
                 <div>
 
